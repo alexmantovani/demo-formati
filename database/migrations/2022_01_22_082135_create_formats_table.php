@@ -15,6 +15,14 @@ class CreateFormatsTable extends Migration
     {
         Schema::create('formats', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('parent_alias')->default('');
+            $table->string('alias')->unique();
+            $table->string('name');
+            $table->enum('type', ['int', 'double', 'bool', 'string'])->default('int');
+            $table->string('value')->nullable();
+            $table->string('rules')->nullable();
+            $table->boolean('visible')->default(false);
+            $table->string('step')->default(0);
             $table->timestamps();
         });
     }

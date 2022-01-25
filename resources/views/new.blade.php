@@ -40,18 +40,20 @@
                         </div>
                         <div class="">
                             <strong>
-                                alias,parent_alias,name,type,rules<br>
+                                alias,parent_alias,name,type,rule,group_titles<br>
                             </strong>
-                            Velocita,,Velocità,int,<br>
-                            GruppoColla,,Gruppo Colla,bool,<br>
-                            GruppoProspetto,,Gruppo Prospetto,bool,<br>
-                            N_Tratti,GruppoColla,Numero Tratti,int,<br>
-                            TipoTratto,GruppoColla,Tratto continuo,bool,<br>
-                            TipoGuk,GruppoProspetto,Gruppo Guk,bool,<br>
-                            Tratto_1,N_Tratti,Primo tratto,int,N_Tratti>0<br>
-                            Tratto_2,N_Tratti,Secondo tratto,int,N_Tratti>1<br>
-                            Tratto_3,N_Tratti,Terzo tratto,int,N_Tratti>2<br>
-                            Tratto_4,N_Tratti,Quarto tratto,int,N_Tratti>3<br>
+                            Velocita,,Velocità,int,,<br>
+                            GruppoColla,,Gruppo Colla,bool,,<br>
+                            GruppoProspetto,,Gruppo Prospetto,bool,,<br>
+                            N_Tratti,GruppoColla,Numero Tratti,int,,Nome Gruppo<br>
+                            TipoTratto,GruppoColla,Tipo di tratto,list,,Nome Gruppo<br>
+                            TipoGuk,GruppoProspetto,Gruppo Guk,bool,,Nome Gruppo<br>
+                            Tratto_1,N_Tratti,Primo tratto,int,N_Tratti>0,<br>
+                            Tratto_2,N_Tratti,Secondo tratto,int,N_Tratti>1,<br>
+                            Tratto_3,N_Tratti,Terzo tratto,int,N_Tratti>2,<br>
+                            Tratto_4,N_Tratti,Quarto tratto,int,N_Tratti>3,<br>
+                            Lista_1,TipoTratto,Tratto intermittente,bool,TipoTratto=Lungo,<br>
+                            ComboGuk,GruppoProspetto,Combo GUK!!!,bool,GruppoColla=on&GruppoProspetto=on,<br>
                         </div>
 
 

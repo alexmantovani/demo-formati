@@ -84,6 +84,46 @@ class FormatTest extends TestCase
         $this->assertEquals($item->visible, 0);
     }
 
+    public function test_rules_int()
+    {
+        $item_padre = Format::create([
+            "alias" => "Velocita",
+            "parent_alias" => "",
+            "name" => "Velocità",
+            "type" => "int",
+            "value" => "50",
+        ]);
+
+        $this->assertTrue(Format::parseRule("Velocita>10"));
+        $this->assertFalse(Format::parseRule("Velocita>60"));
+
+        $this->assertFalse(Format::parseRule("Velocita=10"));
+        $this->assertTrue(Format::parseRule("Velocita=50"));
+
+        $this->assertFalse(Format::parseRule("Velocita<10"));
+        $this->assertTrue(Format::parseRule("Velocita<60"));
+
+        $this->assertTrue(Format::parseRule("Velocita<=50"));
+        $this->assertTrue(Format::parseRule("Velocita>=50"));
+        $this->assertFalse(Format::parseRule("Velocita<=49"));
+        $this->assertFalse(Format::parseRule("Velocita>=51"));
+    }
+
+
+    public function test_rules_bool()
+    {
+        // TODO: Da verificare
+
+        $this->assertTrue(true);
+    }
+
+
+    public function test_findItemsWithStep()
+    {
+        $this->assertTrue(true);
+
+    }
+
     // public function test_start()
     // {
     //     $item_padre = Format::create([
@@ -110,7 +150,7 @@ class FormatTest extends TestCase
 
     //     $items = Format::findItemsWithParents(['','Velocita']);
     //     $this->assertEquals(count($items->get()), 2);
-        
+
     //     $items = Format::findItemsWithParents(['Velocita']);
     //     $this->assertEquals(count($items->get()), 1);
     // }

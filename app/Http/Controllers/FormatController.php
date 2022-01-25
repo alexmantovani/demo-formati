@@ -144,8 +144,6 @@ class FormatController extends Controller
         $_step = $request['_step'] + 1;
 
         $elenco_visibili = Format::where('visible', 1)->get();
-// dd($elenco_visibili);
-
         foreach ($elenco_visibili as $item) {
             if (is_null($request[$item->alias])) {
                 Format::updateAliasWithValue($item->alias, 0);
@@ -194,6 +192,8 @@ class FormatController extends Controller
         foreach ($csv as $item) {
             Format::create($item);
         }
+
+        Format::completeGroupTitle();
 
         return redirect()->route('welcome');
     }

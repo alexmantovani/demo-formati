@@ -16,7 +16,7 @@
 
                         {{-- Se ha genitori li raggruppo in un accordion --}}
                         @if ($group->first()->hasParent())
-                            <?php $parent = $group->first()->parent(); ?>
+                            <?php $parent = $group->first(); ?>
 
                             <div class="accordion mb-3" id="accordion">
                                 <div class="accordion-item">
@@ -25,7 +25,7 @@
                                             data-bs-target="#collapse{{ $parent->alias }}" aria-expanded="false"
                                             aria-controls="collapseTwo">
                                             <h5>
-                                                {{ $parent->name }}
+                                                {{ $group->first()->group_title }}
                                             </h5>
                                         </button>
                                     </h2>
@@ -42,21 +42,43 @@
                                                             </h5>
                                                             <div style="color: lightgrey">
                                                                 <small>
-                                                                    {{ $item->rules }}
-                                                                </small>    
-                                                            </div>                                
+                                                                    {{ $item->parent_alias }}
+                                                                    @if (strlen($item->rules))
+                                                                         &#xb7; {{ $item->rules }}
+                                                                     @endif
+                                                                    </small>
+                                                            </div>
                                                         </div>
                                                         <div class="ml-auto">
                                                             @if ($item->type == 'bool')
-                                                                <input id="{{ $item->alias }}"
+                                                                <input id="{{ $item->alias }}" style="width: 80px"
                                                                     name="{{ $item->alias }}"
                                                                     {{ $item->value == 'on' ? 'checked' : '' }}
                                                                     type="checkbox" data-toggle="toggle">
+
                                                             @elseif ($item->type == 'int')
-                                                                <input id="{{ $item->alias }}"
+                                                                <input class="form-control text-right" id="{{ $item->alias }}"
+                                                                    style="width: 80px"
                                                                     name="{{ $item->alias }}" type="text"
                                                                     value="{{ $item->value }}" class="form-control"
                                                                     required size="4">
+
+                                                            @elseif ($item->type == 'list')
+
+                                                                <select class="form-control" style="width: 80px"
+                                                                    name="{{ $item->alias }}">
+                                                                    <option value="{{ $item->value }}">
+                                                                        {{ $item->value }}</option>
+                                                                    @foreach (['Lungo', 'Medio', 'Corto'] as $value)
+                                                                        <option value="{{ $value }}"
+                                                                            @isset($item->value)
+                                                                                {{ $item->value == $value ? 'selected' : '' }}
+                                                                            @endisset>
+                                                                            {{ $value }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+
                                                             @endif
                                                         </div>
                                                     </div>
@@ -77,7 +99,7 @@
                                             <div style="color: lightgrey">
                                                 <small>
                                                     {{ $item->rules }}
-                                                </small>    
+                                                </small>
                                             </div>
                                         </div>
                                         <div class="ml-auto">

@@ -18,11 +18,12 @@ class CreateFormatsTable extends Migration
             $table->foreignId('parent_alias')->default('');
             $table->string('alias')->unique();
             $table->string('name');
-            $table->enum('type', ['int', 'double', 'bool', 'string'])->default('int');
+            $table->enum('type', ['int', 'double', 'bool', 'string','list'])->default('int');
             $table->string('value')->nullable();
             $table->string('rules')->nullable();
             $table->boolean('visible')->default(false);
             $table->string('step')->default(0);
+            $table->foreignId('group_title')->nullable();
             $table->timestamps();
         });
     }

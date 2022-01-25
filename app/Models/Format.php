@@ -50,10 +50,18 @@ class Format extends Model
 
     public function parseRule($rule)
     {
-        if (strpos($rule, ">") !== false) {
+        if (strpos($rule, ">=") !== false) {
+            $pezzi = explode(">=", $rule);
+            $item = Format::where('alias', $pezzi[0])->first();
+            return ($item->value >= $pezzi[1]);
+        } elseif (strpos($rule, ">") !== false) {
             $pezzi = explode(">", $rule);
             $item = Format::where('alias', $pezzi[0])->first();
             return ($item->value > $pezzi[1]);
+        } elseif (strpos($rule, "<=") !== false) {
+            $pezzi = explode("<=", $rule);
+            $item = Format::where('alias', $pezzi[0])->first();
+            return ($item->value <= $pezzi[1]);
         } elseif (strpos($rule, "<") !== false) {
             $pezzi = explode("<", $rule);
             $item = Format::where('alias', $pezzi[0])->first();
@@ -74,7 +82,7 @@ class Format extends Model
 
     public function respectRules()
     {
-        // print($this->alias . " '" .$this->rules . "'<br>");
+        // Se l'elemento non appartiene a nessuno allo direi che la regole è sempre rispettata
         if (is_null($this->parent())) {
             return true;
         }
@@ -96,16 +104,6 @@ class Format extends Model
         }
 
         return false;
-
-
-
-        // print($this->parent_alias."<br>");
-        // if ($this->parent_alias == "GruppoColla") {
-        //     dd($this->parent()->value);
-        //     return false;
-        // }
-
-        // return true;
     }
 
 
@@ -130,7 +128,7 @@ class Format extends Model
     {
         $items = Format::where('visible', 1)
             ->get()
-            ->groupBy(['parent_alias']);
+            ->groupBy(['group_title']);
 
         return $items;
     }
@@ -142,5 +140,25 @@ class Format extends Model
             'value' => $value,
         ]);
         return $format;
+    }
+
+    public function completeGroupTitle()
+    {
+        // $aliases = Format::where('group_title','')
+        // ->where('parent_alias', '!=', '')
+        // ->groupBy('parent_alias')
+        // ->pluck('parent_alias');
+        // foreach ($aliases as $alias) {
+        //     $group_name = 
+        //     Format::update(['group_title' => 1]);
+        // }
+
+        $items = Format::where('group_title','')
+        ->where('parent_alias', '!=', '')
+        ->get();
+
+        foreach ($items as $item) {
+            $item->update(['group_title' => $item->parent()->name]);
+        }
     }
 }

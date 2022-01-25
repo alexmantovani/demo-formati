@@ -144,6 +144,8 @@ class FormatController extends Controller
         $_step = $request['_step'] + 1;
 
         $elenco_visibili = Format::where('visible', 1)->get();
+// dd($elenco_visibili);
+
         foreach ($elenco_visibili as $item) {
             if (is_null($request[$item->alias])) {
                 Format::updateAliasWithValue($item->alias, 0);
@@ -157,7 +159,6 @@ class FormatController extends Controller
 
         // Vado allo step successivo
         $items = Format::findItemsWithParents($elenco_visibili->pluck('alias'))->get();
-
         // Mostro gli elementi
         foreach ($items as $item) {
             // foreach ($group as $item) {
@@ -166,6 +167,10 @@ class FormatController extends Controller
         }
 
         $items = Format::getVisibleItems();
+
+        if (count($items)==0) {
+            return view('done');
+        }
 
         return view('start', compact('items', '_step'));
     }

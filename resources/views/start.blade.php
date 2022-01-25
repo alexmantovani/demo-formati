@@ -40,6 +40,11 @@
                                                             <h5>
                                                                 {{ $item->name }}
                                                             </h5>
+                                                            <div style="color: lightgrey">
+                                                                <small>
+                                                                    {{ $item->rules }}
+                                                                </small>    
+                                                            </div>                                
                                                         </div>
                                                         <div class="ml-auto">
                                                             @if ($item->type == 'bool')
@@ -69,6 +74,11 @@
                                             <h5>
                                                 {{ $item->name }}
                                             </h5>
+                                            <div style="color: lightgrey">
+                                                <small>
+                                                    {{ $item->rules }}
+                                                </small>    
+                                            </div>
                                         </div>
                                         <div class="ml-auto">
                                             @if ($item->type == 'bool')

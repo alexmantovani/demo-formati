@@ -12,10 +12,21 @@
                             {{ session('status') }}
                         </div>
                     @endif
+<div class="pt-5">
+    <h3>
+        Complimenti !
+    </h3>
+</div>
+
+<div class="">
+    <h5>
+        Hai creato il formato.
+    </h5>
+</div>
 
                     <div class="row pt-5">
-                        <a href="{{route('start')}}">
-                            <button type="button" class="btn btn-primary btn-lg"> Cominciamo </button>
+                        <a href="{{ route('start') }}">
+                            <button type="button" class="btn btn-primary btn-lg"> Ricominciamo </button>
                         </a>
                     </div>
 

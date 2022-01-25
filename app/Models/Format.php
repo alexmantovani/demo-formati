@@ -36,7 +36,7 @@ class Format extends Model
         if ($value) {
             $value = $this->respectRules();
         }
-        if ( ! $value ) {
+        if (!$value) {
             $step = 0;
         }
 
@@ -48,20 +48,57 @@ class Format extends Model
         return $this;
     }
 
+    public function parseRule($rule)
+    {
+        if (strpos($rule, ">") !== false) {
+            $pezzi = explode(">", $rule);
+            $item = Format::where('alias', $pezzi[0])->first();
+            return ($item->value > $pezzi[1]);
+        } elseif (strpos($rule, "<") !== false) {
+            $pezzi = explode("<", $rule);
+            $item = Format::where('alias', $pezzi[0])->first();
+            return ($item->value < $pezzi[1]);
+        } elseif (strpos($rule, "!=") !== false) {
+            $pezzi = explode("!=", $rule);
+            $item = Format::where('alias', $pezzi[0])->first();
+            return ($item->value != $pezzi[1]);
+        } elseif (strpos($rule, "=") !== false) {
+            $pezzi = explode("=", $rule);
+            $item = Format::where('alias', $pezzi[0])->first();
+            // print($pezzi[0]." ".$item->value."=".$pezzi[1]."<br>");
+            return ($item->value == $pezzi[1]);
+        } else {
+            abort(403, "Regola non corretta (" . $rule . ").");
+        }
+    }
+
     public function respectRules()
     {
-        if ( is_null($this->parent()) ) {
+        // print($this->alias . " '" .$this->rules . "'<br>");
+        if (is_null($this->parent())) {
             return true;
         }
 
-        $value = $this->parent()->value;
+        if ($this->rules == '') {
+            // Non ho definito regole se non la dipendenza al parent
+            $value = $this->parent()->value;
 
-        if ($value=='on') return true;
+            if ($value == 'on') return true;
+        } else {
+            foreach (explode("&", $this->rules) as $rule) {
+                // print($rule . " exploded<br>");
+                if ( ! $this->parseRule($rule) ) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         return false;
 
 
-        
+
         // print($this->parent_alias."<br>");
         // if ($this->parent_alias == "GruppoColla") {
         //     dd($this->parent()->value);
@@ -71,7 +108,7 @@ class Format extends Model
         // return true;
     }
 
-    
+
     public function findItemsWithStep($step)
     {
         $items = Format::where('step', $step);
@@ -84,7 +121,7 @@ class Format extends Model
         $items = Format::whereIn('parent_alias', $parentArray)
             // ->get()
             // ->groupBy(['parent_alias'])
-            ;
+        ;
 
         return $items;
     }

@@ -30,7 +30,7 @@
                             - I campi devo essere separati col carattere ","<br>
                             - Non ci devono essere spazi prima o dopo i separatori<br>
                             - La prima riga del CSV deve essere questa:<br>
-                            &nbsp;&nbsp;&nbsp;alias,parent_alias,name,type,rules
+                            &nbsp;&nbsp;&nbsp;alias,parent_alias,name,type,rules,group_titles
                         </div>
 
                         <div class="pt-4">
@@ -40,7 +40,7 @@
                         </div>
                         <div class="">
                             <strong>
-                                alias,parent_alias,name,type,rule,group_titles<br>
+                                alias,parent_alias,name,type,rules,group_titles<br>
                             </strong>
                             Velocita,,Velocità,int,,<br>
                             GruppoColla,,Gruppo Colla,bool,,<br>

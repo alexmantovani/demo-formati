@@ -167,7 +167,8 @@ class FormatController extends Controller
         $items = Format::getVisibleItems();
 
         if (count($items)==0) {
-            return view('done');
+            $items = Format::all();
+            return view('done', compact('items'));
         }
 
         return view('start', compact('items', '_step'));

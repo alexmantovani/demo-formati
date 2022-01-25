@@ -34,18 +34,39 @@
                 </center>
             </div>
 
-            <div class="row col-md-8 pt-3">
-                <h4>
-                    Report formato:
-                </h4>
-            </div>
-            <div class="col-md-7 pt-3">
+            <center>
+                <div class="row col-md-8 pt-3">
+                    <h4>
+                        Resoconto dei dati inseriti
+                    </h4>
+                </div>    
+            </center>
+            <div class="col-md-8 pt-4">
                 <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                                <th scope="col">Parent</th>
+                                <th scope="col">Alias</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Value</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         @foreach ($items as $item)
                             <tr>
-                                <td>{{ $item->alias }}</td>
-                                <td>{{ $item->name }}</td>
+                                <td>
+                                    <div style="color: lightgray">
+                                        {{ $item->parent_alias }}
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ $item->alias }}
+                                </td>
+                                <td>
+                                    <strong>
+                                        {{ $item->name }}
+                                    </strong>
+                                </td>
                                 <td>{{ $item->value }}</td>
                             </tr>
                         @endforeach

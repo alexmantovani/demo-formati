@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateFormatRequest;
 use App\Http\Requests\UploadFormatRequest;
 use App\Models\Format;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use phpDocumentor\Reflection\Types\Null_;
 use PhpParser\Node\Stmt\Foreach_;
@@ -114,6 +115,8 @@ class FormatController extends Controller
 
         $items = Format::getVisibleItems();
 
+        Log::debug( 'Goto ' .$_step );
+
         return view('start', compact('items', '_step'));
     }
 
@@ -135,6 +138,8 @@ class FormatController extends Controller
         }
 
         $items = Format::getVisibleItems();
+
+        Log::debug( 'Goto ' .$_step );
 
         return view('start', compact('items', '_step'));
     }
@@ -167,9 +172,13 @@ class FormatController extends Controller
         $items = Format::getVisibleItems();
 
         if (count($items)==0) {
+            Log::debug( 'Done.' );
+
             $items = Format::all();
             return view('done', compact('items'));
         }
+
+        Log::debug( 'Goto ' .$_step );
 
         return view('start', compact('items', '_step'));
     }

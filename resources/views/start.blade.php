@@ -5,8 +5,31 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <div class="row pb-3">
-                    <h1>Step {{ $_step }}</h1>
+                <div class="d-flex  justify-content-between">
+                    <div class="row pb-3">
+                        <h1>Step {{ $_step }}</h1>
+                    </div>
+{{-- 
+                    <div class="pt-1 d-flex">
+                        <div class="">
+                            <a href="#">
+                                Step
+                            </a>
+                        </div>
+                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <div class="">
+                            <a href="#">
+                                Tree
+                            </a>
+                        </div>
+                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <div class="">
+                            <a href="#">
+                                Favorites
+                            </a>
+                        </div>
+                    </div> 
+--}}
                 </div>
 
                 <form method="POST" action="{{ route('next') }}">
@@ -44,9 +67,9 @@
                                                                 <small>
                                                                     {{ $item->parent_alias }}
                                                                     @if (strlen($item->rules))
-                                                                         &#xb7; {{ $item->rules }}
-                                                                     @endif
-                                                                    </small>
+                                                                        &#xb7; {{ $item->rules }}
+                                                                    @endif
+                                                                </small>
                                                             </div>
                                                         </div>
                                                         <div class="ml-auto">
@@ -57,8 +80,8 @@
                                                                     type="checkbox" data-toggle="toggle">
 
                                                             @elseif ($item->type == 'int')
-                                                                <input class="form-control text-right" id="{{ $item->alias }}"
-                                                                    style="width: 80px"
+                                                                <input class="form-control text-right"
+                                                                    id="{{ $item->alias }}" style="width: 80px"
                                                                     name="{{ $item->alias }}" type="text"
                                                                     value="{{ $item->value }}" class="form-control"
                                                                     required size="4">

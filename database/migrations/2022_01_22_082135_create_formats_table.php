@@ -23,7 +23,7 @@ class CreateFormatsTable extends Migration
             $table->string('rules')->nullable();
             $table->boolean('visible')->default(false);
             $table->string('step')->default(0);
-            $table->foreignId('group_title')->nullable();
+            $table->foreignId('group_title')->default('');
             $table->timestamps();
         });
     }

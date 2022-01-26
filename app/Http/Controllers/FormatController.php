@@ -6,6 +6,7 @@ use App\Http\Requests\StoreFormatRequest;
 use App\Http\Requests\UpdateFormatRequest;
 use App\Http\Requests\UploadFormatRequest;
 use App\Models\Format;
+use App\Models\CsvArchive;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -185,13 +186,45 @@ class FormatController extends Controller
 
     public function new()
     {
-        return view('new');
+        $items = CsvArchive::all();
+        return view('new', compact('items'));
     }
 
     public function upload(UploadFormatRequest $request)
     {
         $path = $request->file->move(public_path() . '/csv', 'json_data.json');
+        FormatController::loadCsv($path);
 
+        if ( isset($request->name) ) {
+            $item = CsvArchive::where('name', $request->name)->first();
+            if ($item !== null) {
+                $item->update(['name' => $request->name]);
+            } else {
+                $item = CsvArchive::create([
+                  'name' => $request->name,
+                ]);
+           }
+
+            // $item = CsvArchive::create(['name'=>$request->name]);
+            Storage::put('csv/' . $item->id, file($path));
+        }
+
+        Format::completeGroupTitle();
+
+        return redirect()->route('welcome');
+    }
+
+    public function attiva(UploadFormatRequest $request, $id)
+    {
+        $path = storage_path('/app/csv/' . $id);
+
+        FormatController::loadCsv($path);
+
+        return redirect()->route('welcome');
+    }
+
+    public function loadCsv($path)
+    {
         $csv = array_map('str_getcsv', file($path));
         array_walk($csv, function (&$a) use ($csv) {
             $a = array_combine($csv[0], $a);
@@ -202,9 +235,5 @@ class FormatController extends Controller
         foreach ($csv as $item) {
             Format::create($item);
         }
-
-        Format::completeGroupTitle();
-
-        return redirect()->route('welcome');
     }
 }

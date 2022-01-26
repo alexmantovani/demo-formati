@@ -21,6 +21,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/attiva/{id}', [App\Http\Controllers\FormatController::class, 'attiva'])->name('attiva');
+
 Route::get('/start', [App\Http\Controllers\FormatController::class, 'start'])->name('start');
 Route::get('/prev/{step}', [App\Http\Controllers\FormatController::class, 'prev'])->name('prev');
 Route::post('/next', [App\Http\Controllers\FormatController::class, 'next'])->name('next');

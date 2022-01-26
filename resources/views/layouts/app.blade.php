@@ -46,7 +46,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('new') }}">{{ __('Upload CSV') }}</a>
+                            <a class="nav-link" href="{{ route('new') }}">{{ __('Modelli CSV') }}</a>
                         </li>
 
                         <!-- Authentication Links -->

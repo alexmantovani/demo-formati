@@ -220,6 +220,8 @@ class FormatController extends Controller
 
         FormatController::loadCsv($path);
 
+        Format::completeGroupTitle();
+
         return redirect()->route('welcome');
     }
 

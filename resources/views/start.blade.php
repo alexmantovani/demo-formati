@@ -44,8 +44,8 @@
                             <div class="accordion mb-3" id="accordion">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="{{ $parent->alias }}">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapse{{ $parent->alias }}" aria-expanded="false"
+                                        <button class="accordion-button " type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse{{ $parent->alias }}" aria-expanded="true"
                                             aria-controls="collapseTwo">
                                             <h5>
                                                 {{ $group->first()->group_title }}
@@ -54,7 +54,7 @@
                                     </h2>
 
                                     @foreach ($group as $item)
-                                        <div id="collapse{{ $parent->alias }}" class="accordion-collapse collapse"
+                                        <div id="collapse{{ $parent->alias }}" class="accordion-collapse collapse show"
                                             aria-labelledby="{{ $parent->alias }}" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 <div class="row">

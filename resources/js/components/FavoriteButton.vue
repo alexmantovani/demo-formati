@@ -1,0 +1,40 @@
+<template>
+    <div>
+        <img :src="imageLink" @click="favoriteIssue" width="20">
+    </div>
+</template>
+
+<script>
+export default {
+    props: ['alias', 'favorite'],
+
+    mounted() {
+        console.log('Component mounted.')
+    },
+
+    data: function() {
+        return {
+            status: this.favorite,
+        }
+    },
+
+    methods: {
+        favoriteIssue() {
+            axios.post( '/alias/' + this.alias + '/favorite')
+            .then( response => {
+                // console.log(process.env.ENV_PREFIX);
+                this.status = ! this.status;
+                // console.log(response.data);
+            });
+        }
+    },
+
+    computed: {
+        imageLink() {
+            console.log(process.env.VUE_APP_ENV_PREFIX);
+
+            return (this.status) ? "/svg/favorite.svg" : "/svg/not-favorite.svg";
+        }
+    }
+}
+</script>

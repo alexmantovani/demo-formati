@@ -10,10 +10,6 @@ use App\Models\CsvArchive;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\Types\Null_;
-use PhpParser\Node\Stmt\Foreach_;
-
-use function PHPUnit\Framework\isNull;
 
 class FormatController extends Controller
 {
@@ -57,17 +53,6 @@ class FormatController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Format  $format
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Format $format)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Format  $format
@@ -103,52 +88,59 @@ class FormatController extends Controller
 
     public function start()
     {
+        Format::generateStepSequence();
+        $tree = Format::getStepTree();
+
         $_step = 1;
         $items = Format::findItemsWithParents([''])->get();
 
         Format::where('visible', '=', 1)->update(['visible' => 0]);
 
         foreach ($items as $item) {
-            // foreach ($group as $item) {
-                $item->set_visible(true, $_step);
-            // }
+            $item->set_visible(true, $_step);
         }
 
         $items = Format::getVisibleItems();
 
-        Log::debug( 'Goto ' .$_step );
+        Log::debug('Goto ' . $_step);
 
-        return view('start', compact('items', '_step'));
+        return view('start', compact('items', '_step', 'tree'));
     }
 
-    public function prev(StoreFormatRequest $request, $step)
+    public function goto($step)
     {
-        $_step = $step - 1;
+        Format::generateStepSequence();
+        $tree = Format::getStepTree();
 
         // Nascondo tutti gli elementi
-        Format::where('visible', '=', 1)->update(['visible' => 0]);
-        Format::where('step', '=', $step)->update(['step' => 0]);
+        Format::hideAllItems();
 
-        $items = Format::findItemsWithStep($_step)->get();
+        $items = Format::findItemsWithStep($step)->get();
 
         // Mostro gli elementi
         foreach ($items as $item) {
-            // foreach ($group as $item) {
-                $item->set_visible(true, $_step);
-            // }
+            $item->set_visible(true, $step);
         }
 
         $items = Format::getVisibleItems();
 
-        Log::debug( 'Goto ' .$_step );
+        if (count($items) == 0) {
+            Log::debug('Done.');
 
-        return view('start', compact('items', '_step'));
+            $items = Format::all();
+            return view('done', compact('items'));
+        }
+
+        Log::debug('Goto ' . $step);
+
+        $_step = $step;
+        return view('start', compact('items', '_step', 'tree'));
     }
+
 
     public function next(StoreFormatRequest $request)
     {
-        $_step = $request['_step'] + 1;
-
+        // Aggiorno i dati con quelli inseriti
         $elenco_visibili = Format::where('visible', 1)->get();
         foreach ($elenco_visibili as $item) {
             if (is_null($request[$item->alias])) {
@@ -158,30 +150,15 @@ class FormatController extends Controller
             }
         }
 
-        // Nascondo tutti gli elementi
-        Format::where('visible', '=', 1)->update(['visible' => 0]);
+        Format::generateStepSequence();
+        $tree = Format::getStepTree();
+        $_step = $request['_step'] + 1;
 
-        // Vado allo step successivo
-        $items = Format::findItemsWithParents($elenco_visibili->pluck('alias'))->get();
-        // Mostro gli elementi
-        foreach ($items as $item) {
-            // foreach ($group as $item) {
-                $item->set_visible(true, $_step);
-            // }
+        if ($request['_view_mode']=='favorite') {
+           return FormatController::favorite(); 
         }
 
-        $items = Format::getVisibleItems();
-
-        if (count($items)==0) {
-            Log::debug( 'Done.' );
-
-            $items = Format::all();
-            return view('done', compact('items'));
-        }
-
-        Log::debug( 'Goto ' .$_step );
-
-        return view('start', compact('items', '_step'));
+        return FormatController::goto($_step);
     }
 
     public function new()
@@ -195,15 +172,15 @@ class FormatController extends Controller
         $path = $request->file->move(public_path() . '/csv', 'json_data.json');
         FormatController::loadCsv($path);
 
-        if ( isset($request->name) ) {
+        if (isset($request->name)) {
             $item = CsvArchive::where('name', $request->name)->first();
             if ($item !== null) {
                 $item->update(['name' => $request->name]);
             } else {
                 $item = CsvArchive::create([
-                  'name' => $request->name,
+                    'name' => $request->name,
                 ]);
-           }
+            }
 
             // $item = CsvArchive::create(['name'=>$request->name]);
             Storage::put('csv/' . $item->id, file($path));
@@ -214,28 +191,34 @@ class FormatController extends Controller
         return redirect()->route('welcome');
     }
 
-    public function attiva(UploadFormatRequest $request, $id)
+    public function swap_favorite($alias)
     {
-        $path = storage_path('/app/csv/' . $id);
-
-        FormatController::loadCsv($path);
-
-        Format::completeGroupTitle();
-
-        return redirect()->route('welcome');
+        $format = Format::where('alias', '=', $alias)->first();
+        $format->update(['favorite' => !$format->favorite]);
+        return true;
     }
 
-    public function loadCsv($path)
-    {
-        $csv = array_map('str_getcsv', file($path));
-        array_walk($csv, function (&$a) use ($csv) {
-            $a = array_combine($csv[0], $a);
-        });
-        array_shift($csv); # remove column header
 
-        Format::truncate();
-        foreach ($csv as $item) {
-            Format::create($item);
+    public function favorite()
+    {
+        Format::generateStepSequence();
+        $tree = Format::getStepTree();
+
+        Format::hideAllItems();
+
+        $items = Format::where('favorite', '=', 1)->get();
+        foreach ($items as $item) {
+            $respectRules = $item->respectRules();
+            $item->update([
+                'visible' => $respectRules,
+            ]);
         }
+
+        $items = Format::where('favorite', '=', 1)
+            ->where('visible', 1)
+            ->get()
+            ->groupBy(['group_title']);
+
+        return view('favorite', compact('items', 'tree'));
     }
 }

@@ -29,18 +29,24 @@
             {{-- Dettagli --}}
             <div class="col">
 
+
+
+
+
+
+
                 <div class="row justify-content-center">
                     <div class="col-md-8">
 
-
-
                         <div class="d-flex  justify-content-between">
                             <div class="row pb-3">
-                                <h1>Step {{ $_step }}</h1>
+                                <h1>Favorites</h1>
                             </div>
                             <div class="pt-1 d-flex">
                                 <div class="">
-                                    Step
+                                    <a class="nav-link p-0" href="{{ route('start') }}">
+                                        Step
+                                    </a>
                                 </div>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                                 <div class="">
@@ -50,21 +56,17 @@
                                 </div>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                                 <div class="">
-                                    <a class="nav-link p-0" href="{{ route('favorite') }}">
-                                        Favorites
-                                    </a>
+                                    Favorites
                                 </div>
                             </div>
                         </div>
 
+
                         <form method="POST" action="{{ route('next') }}">
                             @csrf
-                            <input type="hidden" name="_step" value="{{ $_step }}">
-                            <input type="hidden" name="_view_mode" value="step">
-                            @foreach ($items as $group)
+                            <input type="hidden" name="_view_mode" value="favorite">
 
-                                {{-- Se ha genitori li raggruppo in un accordion --}}
-                                {{-- @if ($group->first()->hasParent()) --}}
+                            @foreach ($items as $group)
                                 <?php $parent = $group->first(); ?>
 
                                 <div class="accordion mb-3" id="accordion">
@@ -82,8 +84,7 @@
                                         @foreach ($group as $item)
                                             <div id="collapse{{ $parent->alias }}"
                                                 class="accordion-collapse collapse show"
-                                                aria-labelledby="{{ $parent->alias }}"
-                                                data-bs-parent="#accordionExample">
+                                                aria-labelledby="{{ $parent->alias }}" data-bs-parent="#accordionExample">
                                                 <div class="accordion-body">
                                                     <div class="row">
                                                         <div class="d-flex justify-content-between">
@@ -152,16 +153,15 @@
 
                             <div class="d-flex  justify-content-between">
                                 <div>
-                                    @if ($_step > 1)
-                                        <a href="{{ route('goto', $_step - 1) }}">
-                                            <button type="button"
-                                                class="btn btn btn-outline-primary btn-lg">Indietro</button>
-                                        </a>
-                                    @endif
+                                    {{-- @if ($_step > 1)
+                                <a href="{{ route('prev', $_step) }}">
+                                    <button type="button" class="btn btn btn-outline-primary btn-lg">Indietro</button>
+                                </a>
+                            @endif --}}
                                 </div>
                                 <div>
                                     <button type="submit" class="btn btn btn-outline-primary btn-lg">
-                                        {{ __('Avanti') }}
+                                        {{ __('Salva') }}
                                     </button>
                                 </div>
                             </div>
@@ -169,24 +169,14 @@
                         </form>
 
                     </div>
-
-
                 </div>
             </div>
         </div>
-
-    </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> --}}
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
 
-
-    <script>
-        $(document).ready(function() {
-            $('.treeview').mdbTreeview();
-        });
-    </script>
 
 @endsection

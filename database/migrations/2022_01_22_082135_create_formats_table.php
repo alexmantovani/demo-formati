@@ -24,6 +24,7 @@ class CreateFormatsTable extends Migration
             $table->boolean('visible')->default(false);
             $table->string('step')->default(0);
             $table->foreignId('group_title')->default('');
+            $table->boolean('favorite')->default(false);
             $table->timestamps();
         });
     }

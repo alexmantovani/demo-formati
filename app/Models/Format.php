@@ -30,20 +30,16 @@ class Format extends Model
         return $this->hasMany(Format::class, 'parent_alias', 'alias');
     }
 
-    public function set_visible($visible, $step)
+    public function set_visible($visible)
     {
         $value = $visible;
         if ($value) {
             $value = $this->respectRules();
         }
-        if (!$value) {
-            $step = 0;
-        }
 
         // Andrebbero verificate le regole
         $this->update([
             'visible' => $value,
-            'step' => $step,
         ]);
         return $this;
     }
@@ -95,7 +91,7 @@ class Format extends Model
         } else {
             foreach (explode("&", $this->rules) as $rule) {
                 // print($rule . " exploded<br>");
-                if ( ! $this->parseRule($rule) ) {
+                if (!$this->parseRule($rule)) {
                     return false;
                 }
             }
@@ -133,6 +129,21 @@ class Format extends Model
         return $items;
     }
 
+
+    public function getStepTree()
+    {
+        $items = Format::where('step', '>', 0)
+            ->get()
+            ->groupBy(['step', 'group_title']);
+
+        return $items;
+    }
+
+    public function hideAllItems()
+    {
+        Format::where('visible', '=', 1)->update(['visible' => 0]);
+    }
+
     public function updateAliasWithValue($alias, $value)
     {
         $format = Format::where('alias', $alias)->first();
@@ -144,21 +155,59 @@ class Format extends Model
 
     public function completeGroupTitle()
     {
-        // $aliases = Format::where('group_title','')
-        // ->where('parent_alias', '!=', '')
-        // ->groupBy('parent_alias')
-        // ->pluck('parent_alias');
-        // foreach ($aliases as $alias) {
-        //     $group_name = 
-        //     Format::update(['group_title' => 1]);
-        // }
-
-        $items = Format::where('group_title','')
-        ->where('parent_alias', '!=', '')
-        ->get();
+        $items = Format::where('group_title', '')
+            ->where('parent_alias', '!=', '')
+            ->get();
 
         foreach ($items as $item) {
             $item->update(['group_title' => $item->parent()->name]);
+        }
+    }
+
+    public function generateStepSequence()
+    {
+        Format::where('step', '>', 0)
+            ->update(['step' => 0]);
+
+        $step = 1;
+        $elenco = [''];
+        while (True) {
+            // Cerco tutti gli elementi appartenenti all'elenco passatomi
+            $items = Format::findItemsWithParents($elenco)->get();
+
+            // Assegno quelli che rispettano le regole
+            foreach ($items as $item) {
+                $respectRules = $item->respectRules();
+                $item->update([
+                    'step' => $respectRules ? $step : 0,
+                ]);
+            }
+
+            $items = Format::where('step', $step)->get();
+            $elenco = $items->pluck('alias');
+            if (count($elenco) == 0) break;
+
+            $step = $step + 1;
+        }
+    }
+
+    public function getStepIndex()
+    {
+    }
+
+
+    public function generateCategories($items)
+    {
+        foreach ($items as $item) {
+            // echo '<li>' . $item->name . '</li>';
+            if (count($item->childs) > 0) {
+                echo '<li><a href="' . $item->alias . '">' . $item->name . '</a></li>';
+                echo '<ul>';
+                // echo '<li>';
+                Format::generateCategories($item->childs);
+                // echo '</li>';
+                echo '</ul>';
+            }
         }
     }
 }

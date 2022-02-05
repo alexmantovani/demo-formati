@@ -25,6 +25,11 @@
                                                 <h5>{{ $item->name }}</h5>
                                             </td>
                                             <td style="width: 90px">
+                                                <a href="{{ route('show', $item->id) }}">
+                                                    <button type="button" class="btn btn-outline-primary">Mostra</button>
+                                                </a>
+                                            </td>
+                                            <td style="width: 90px">
                                                 <a href="{{ route('attiva', $item->id) }}">
                                                     <button type="button" class="btn btn-outline-primary">Attiva</button>
                                                 </a>

@@ -170,7 +170,7 @@ class FormatController extends Controller
     public function upload(UploadFormatRequest $request)
     {
         $path = $request->file->move(public_path() . '/csv', 'json_data.json');
-        FormatController::loadCsv($path);
+        CsvArchiveController::loadCsv($path);
 
         if (isset($request->name)) {
             $item = CsvArchive::where('name', $request->name)->first();

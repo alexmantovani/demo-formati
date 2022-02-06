@@ -102,7 +102,7 @@ class FormatController extends Controller
 
         $items = Format::getVisibleItems();
 
-        Log::debug('Goto ' . $_step);
+        Log::debug($_SERVER['REMOTE_ADDR'] . ' Goto ' . $_step);
 
         return view('start', compact('items', '_step', 'tree'));
     }
@@ -133,13 +133,13 @@ class FormatController extends Controller
         $items = Format::getVisibleItems();
 
         if (count($items) == 0) {
-            Log::debug('Done.');
+            Log::debug($_SERVER['REMOTE_ADDR'] . ' Done.');
 
             $items = Format::all();
             return view('done', compact('items'));
         }
 
-        Log::debug('Goto ' . $step);
+        Log::debug($_SERVER['REMOTE_ADDR'] . ' Goto ' . $step);
 
         $_step = $step;
         return view('start', compact('items', '_step', 'tree'));

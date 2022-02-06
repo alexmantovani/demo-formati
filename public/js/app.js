@@ -5283,16 +5283,16 @@ __webpack_require__.r(__webpack_exports__);
     favoriteIssue: function favoriteIssue() {
       var _this = this;
 
-      axios.post('/alias/' + this.alias + '/favorite').then(function (response) {
+      axios.post("" + '/alias/' + this.alias + '/favorite').then(function (response) {
         // console.log(process.env.ENV_PREFIX);
-        _this.status = !_this.status; // console.log(response.data);
+        _this.status = !_this.status;
       });
     }
   },
   computed: {
     imageLink: function imageLink() {
       console.log(process.env.VUE_APP_ENV_PREFIX);
-      return this.status ? "/svg/favorite.svg" : "/svg/not-favorite.svg";
+      return this.status ? "" + "/svg/favorite.svg" : "" + "/svg/not-favorite.svg";
     }
   }
 });

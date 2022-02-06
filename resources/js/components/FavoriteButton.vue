@@ -20,11 +20,10 @@ export default {
 
     methods: {
         favoriteIssue() {
-            axios.post( '/alias/' + this.alias + '/favorite')
+            axios.post( process.env.MIX_PREFIX_PATH + '/alias/' + this.alias + '/favorite')
             .then( response => {
                 // console.log(process.env.ENV_PREFIX);
                 this.status = ! this.status;
-                // console.log(response.data);
             });
         }
     },

@@ -33,7 +33,7 @@ export default {
         imageLink() {
             console.log(process.env.VUE_APP_ENV_PREFIX);
 
-            return (this.status) ? "/svg/favorite.svg" : "/svg/not-favorite.svg";
+            return (this.status) ? process.env.MIX_PREFIX_PATH + "/svg/favorite.svg" : process.env.MIX_PREFIX_PATH + "/svg/not-favorite.svg";
         }
     }
 }

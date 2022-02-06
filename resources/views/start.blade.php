@@ -182,11 +182,4 @@
     {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> --}}
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js"></script>
 
-
-    <script>
-        $(document).ready(function() {
-            $('.treeview').mdbTreeview();
-        });
-    </script>
-
 @endsection

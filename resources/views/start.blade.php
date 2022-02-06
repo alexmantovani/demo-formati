@@ -44,7 +44,7 @@
                                 </div>
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                                 <div class="">
-                                    <a class="nav-link p-0" href="#">
+                                    <a class="nav-link p-0" href="{{route('goto_tree', 1)}}">
                                         Tree
                                     </a>
                                 </div>

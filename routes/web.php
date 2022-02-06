@@ -25,10 +25,9 @@ Route::get('/attiva/{csvArchive}', [App\Http\Controllers\CsvArchiveController::c
 Route::get('/show/{csvArchive}', [App\Http\Controllers\CsvArchiveController::class, 'show'])->name('show');
 
 Route::get('/start', [App\Http\Controllers\FormatController::class, 'start'])->name('start');
-//  Route::get('/prev/{step}', [App\Http\Controllers\FormatController::class, 'prev'])->name('prev');
 Route::post('/next', [App\Http\Controllers\FormatController::class, 'next'])->name('next');
 Route::get('/step/{step}', [App\Http\Controllers\FormatController::class, 'goto'])->name('goto');
-// Route::post('/store', [App\Http\Controllers\FormatController::class, 'next'])->name('store');
+Route::get('/tree/{step}', [App\Http\Controllers\FormatController::class, 'goto_tree'])->name('goto_tree');
 
 Route::get('/new', [App\Http\Controllers\FormatController::class, 'new'])->name('new');
 Route::post('/upload', [App\Http\Controllers\FormatController::class, 'upload'])->name('upload');

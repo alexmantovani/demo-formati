@@ -103,14 +103,14 @@ class Format extends Model
     }
 
 
-    public function findItemsWithStep($step)
+    public static function findItemsWithStep($step)
     {
         $items = Format::where('step', $step);
 
         return $items;
     }
 
-    public function findItemsWithParents($parentArray)
+    public static function findItemsWithParents($parentArray)
     {
         $items = Format::whereIn('parent_alias', $parentArray)
             // ->get()
@@ -120,7 +120,7 @@ class Format extends Model
         return $items;
     }
 
-    public function getVisibleItems()
+    public static function getVisibleItems()
     {
         $items = Format::where('visible', 1)
             ->get()
@@ -130,7 +130,7 @@ class Format extends Model
     }
 
 
-    public function getStepTree()
+    public static function getStepTree()
     {
         $items = Format::where('step', '>', 0)
             ->get()
@@ -139,12 +139,12 @@ class Format extends Model
         return $items;
     }
 
-    public function hideAllItems()
+    public static function hideAllItems()
     {
         Format::where('visible', '=', 1)->update(['visible' => 0]);
     }
 
-    public function updateAliasWithValue($alias, $value)
+    public static function updateAliasWithValue($alias, $value)
     {
         $format = Format::where('alias', $alias)->first();
         $format->update([
@@ -153,7 +153,7 @@ class Format extends Model
         return $format;
     }
 
-    public function completeGroupTitle()
+    public static function completeGroupTitle()
     {
         $items = Format::where('group_title', '')
             ->where('parent_alias', '!=', '')
@@ -164,7 +164,7 @@ class Format extends Model
         }
     }
 
-    public function generateStepSequence()
+    public static function generateStepSequence()
     {
         Format::where('step', '>', 0)
             ->update(['step' => 0]);

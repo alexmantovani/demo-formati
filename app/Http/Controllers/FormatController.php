@@ -115,7 +115,7 @@ class FormatController extends Controller
         return view('tree', compact('tree'));
     }
 
-    public function goto($step)
+    public function goto($step, $group='')
     {
         Format::generateStepSequence();
         $tree = Format::getStepTree();

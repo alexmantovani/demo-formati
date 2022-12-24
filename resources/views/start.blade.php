@@ -67,11 +67,21 @@
                                 {{-- @if ($group->first()->hasParent()) --}}
                                 <?php $parent = $group->first(); ?>
 
+{{--                                 
+                                OPEN <button class="accordion-button"           type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"  aria-controls="collapseOne">
+                                CLOS <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> 
+
+    OPEN <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+    CLOS <div id="collapseTwo" class="accordion-collapse collapse     " aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+
+                                    --}}
+
+
                                 <div class="accordion mb-3" id="accordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="{{ $parent->alias }}">
-                                            <button class="accordion-button " type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapse{{ $parent->alias }}" aria-expanded="true"
+                                            <button class="accordion-button {{ $group->first()->group_title==$group->first()->group_title? '':'collapsed'}}" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapse{{ $parent->alias }}" aria-expanded="{{ $group->first()->group_title==$group->first()->group_title ? 'true':'false'}}"
                                                 aria-controls="collapseTwo">
                                                 <h5>
                                                     {{ $group->first()->group_title }}
@@ -81,7 +91,7 @@
 
                                         @foreach ($group as $item)
                                             <div id="collapse{{ $parent->alias }}"
-                                                class="accordion-collapse collapse show"
+                                                class="accordion-collapse collapse {{ $group->first()->group_title==$group->first()->group_title ? 'show':''}}"
                                                 aria-labelledby="{{ $parent->alias }}"
                                                 data-bs-parent="#accordionExample">
                                                 <div class="accordion-body">

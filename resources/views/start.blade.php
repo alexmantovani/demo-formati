@@ -4,35 +4,14 @@
     <div class="container">
         <div class="row">
             {{-- Albero degli step --}}
-            <div class="col-md-auto">
-                @foreach ($tree as $group)
-                    <div class="">
-                        <h5>
-                            <a class="nav-link p-0" href="{{ route('goto', $loop->index + 1) }}">
-                                Step {{ $loop->index + 1 }}
-                            </a>
-                        </h5>
-                    </div>
-                    @foreach ($group as $item)
-                        <?php $sperem = $item->first(); ?>
-                        <div class="">
-                            &nbsp;&nbsp;&nbsp;
-                            {{ $sperem->group_title }}
-                        </div>
-                    @endforeach
-                    <div class="pb-3">
-                    </div>
-                @endforeach
-            </div>
+            @include('layouts.treeview')
 
 
             {{-- Dettagli --}}
             <div class="col">
 
                 <div class="row justify-content-center">
-                    <div class="col-md-8">
-
-
+                    <div class="col-md-9">
 
                         <div class="d-flex  justify-content-between">
                             <div class="row pb-3">
@@ -67,15 +46,14 @@
                                 {{-- @if ($group->first()->hasParent()) --}}
                                 <?php $parent = $group->first(); ?>
 
-{{--                                 
+{{--
                                 OPEN <button class="accordion-button"           type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"  aria-controls="collapseOne">
-                                CLOS <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> 
+                                CLOS <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
 
     OPEN <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
     CLOS <div id="collapseTwo" class="accordion-collapse collapse     " aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
 
                                     --}}
-
 
                                 <div class="accordion mb-3" id="accordion">
                                     <div class="accordion-item">

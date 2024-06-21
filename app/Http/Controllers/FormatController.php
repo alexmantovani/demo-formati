@@ -115,7 +115,7 @@ class FormatController extends Controller
         return view('tree', compact('tree'));
     }
 
-    public function goto($step, $group='')
+    public function goto($step)
     {
         Format::generateStepSequence();
         $tree = Format::getStepTree();
@@ -145,6 +145,10 @@ class FormatController extends Controller
         return view('start', compact('items', '_step', 'tree'));
     }
 
+    public function goto_group($step, $group='')
+    {
+
+    }
 
     public function next(StoreFormatRequest $request)
     {
@@ -163,7 +167,7 @@ class FormatController extends Controller
         $_step = $request['_step'] + 1;
 
         if ($request['_view_mode']=='favorite') {
-           return FormatController::favorite(); 
+           return FormatController::favorite();
         }
 
         return FormatController::goto($_step);

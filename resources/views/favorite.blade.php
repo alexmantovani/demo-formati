@@ -4,27 +4,7 @@
     <div class="container">
         <div class="row">
             {{-- Albero degli step --}}
-            <div class="col-md-auto">
-                @foreach ($tree as $group)
-                    <div class="">
-                        <h5>
-                            <a class="nav-link p-0" href="{{ route('goto', $loop->index + 1) }}">
-                                Step {{ $loop->index + 1 }}
-                            </a>
-                        </h5>
-                    </div>
-                    @foreach ($group as $item)
-                        <?php $sperem = $item->first(); ?>
-                        <div class="">
-                            &nbsp;&nbsp;&nbsp;
-                            {{ $sperem->group_title }}
-                        </div>
-                    @endforeach
-                    <div class="pb-3">
-                    </div>
-                @endforeach
-            </div>
-
+            @include('layouts.treeview')
 
             {{-- Dettagli --}}
             <div class="col">

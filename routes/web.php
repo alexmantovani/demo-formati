@@ -27,7 +27,7 @@ Route::get('/show/{csvArchive}', [App\Http\Controllers\CsvArchiveController::cla
 Route::get('/start', [App\Http\Controllers\FormatController::class, 'start'])->name('start');
 Route::post('/next', [App\Http\Controllers\FormatController::class, 'next'])->name('next');
 Route::get('/step/{step}', [App\Http\Controllers\FormatController::class, 'goto'])->name('goto');
-Route::get('/step/{step}/{group}', [App\Http\Controllers\FormatController::class, 'goto'])->name('goto');
+Route::get('/step/{step}#{group}', [App\Http\Controllers\FormatController::class, 'goto_group'])->name('goto_group');
 
 Route::get('/tree/{step}', [App\Http\Controllers\FormatController::class, 'goto_tree'])->name('goto_tree');
 
